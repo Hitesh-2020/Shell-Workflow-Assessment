@@ -31,14 +31,52 @@ jobs:
     - name: Run tests
       run: mvn test
 
-    - name: Run Addition Test
+    - name: Run Addition Tests
       run: |
-        echo "Running Addition Test"
+        echo "Running Addition Tests"
         javac Addition.java
-        java Addition > result.txt
-        if grep -q "The sum of 10 and 20 is: 30" result.txt; then
-          echo "Test Passed"
+
+        # Test 1
+        java Addition > result1.txt
+        if grep -q "The sum of 10 and 20 is: 30" result1.txt; then
+          echo "Test 1 Passed"
         else
-          echo "Test Failed"
+          echo "Test 1 Failed"
           exit 1
         fi
+
+        # Test 2
+        echo "public class Addition { public static void main(String[] args) { int num1 = 5; int num2 = 15; int sum = num1 + num2; System.out.println(\"The sum of \" + num1 + \" and \" + num2 + \" is: \" + sum); }}" > Addition.java
+        javac Addition.java
+        java Addition > result2.txt
+        if grep -q "The sum of 5 and 15 is: 20" result2.txt; then
+          echo "Test 2 Passed"
+        else
+          echo "Test 2 Failed"
+          exit 1
+        fi
+
+        # Test 3
+        echo "public class Addition { public static void main(String[] args) { int num1 = -10; int num2 = 20; int sum = num1 + num2; System.out.println(\"The sum of \" + num1 + \" and \" + num2 + \" is: \" + sum); }}" > Addition.java
+        javac Addition.java
+        java Addition > result3.txt
+        if grep -q "The sum of -10 and 20 is: 10" result3.txt; then
+          echo "Test 3 Passed"
+        else
+          echo "Test 3 Failed"
+          exit 1
+        fi
+
+        # Test 4
+        echo "public class Addition { public static void main(String[] args) { int num1 = 0; int num2 = 0; int sum = num1 + num2; System.out.println(\"The sum of \" + num1 + \" and \" + num2 + \" is: \" + sum); }}" > Addition.java
+        javac Addition.java
+        java Addition > result4.txt
+        if grep -q "The sum of 0 and 0 is: 0" result4.txt; then
+          echo "Test 4 Passed"
+        else
+          echo "Test 4 Failed"
+          exit 1
+        fi
+
+        # Restore original Addition.java
+        echo "public class Addition { public static void main(String[] args) { int num1 = 10; int num2 = 20; int sum = num1 + num2; System.out.println(\"The sum of \" + num1 + \" and \" + num2 + \" is: \" + sum); }}" > Addition.java
