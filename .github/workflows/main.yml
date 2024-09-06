@@ -30,3 +30,15 @@ jobs:
 
     - name: Run tests
       run: mvn test
+
+    - name: Run Addition Test
+      run: |
+        echo "Running Addition Test"
+        javac Addition.java
+        java Addition > result.txt
+        if grep -q "The sum of 10 and 20 is: 30" result.txt; then
+          echo "Test Passed"
+        else
+          echo "Test Failed"
+          exit 1
+        fi
